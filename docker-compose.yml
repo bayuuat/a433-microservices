@@ -1,0 +1,23 @@
+version: '3.8'  # Menentukan versi docker-compose yang digunakan.
+
+services:  # Mendefinisikan semua container yang akan dijalankan.
+
+  item-db:  # Container database.
+    image: mongo:3  # Menggunakan image MongoDB versi 3 dari Docker Hub.
+    volumes:
+      - app-db:/data/db  # Menyimpan data database ke volume bernama app-db.
+    restart: always  # Otomatis restart container.
+
+  item-app:  # Container aplikasi utama (backend/service).
+    image: ghcr.io/bayuuat/item-app:v1  # Mengambil image aplikasi dari GitHub Container Registry.
+    ports:
+      - "80:8080"  # Memetakan port 8080 di container ke port 80 di host.
+    environment:
+      - NODE_ENV=production  # Menentukan environment aplikasi sebagai production.
+      - DB_HOST=item-db  # Koneksi ke container database dengan nama service "item-db".
+    depends_on:
+      - item-db  # Memastikan item-db dijalankan terlebih dahulu.
+    restart: always  # Restart otomatis.
+
+volumes:  # Mendefinisikan volume yang digunakan.
+  app-db:  # Volume bernama app-db digunakan untuk menyimpan data MongoDB.
