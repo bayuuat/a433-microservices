@@ -21,7 +21,7 @@ jobs:
           chmod +x /usr/local/bin/hadolint
 
       - name: Run Hadolint
-        run: hadolint karsajobs-ui/Dockerfile
+        run: hadolint Dockerfile
 
   build-app-karsajobs-ui:
     needs: lint-dockerfile
